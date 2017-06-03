@@ -52,6 +52,7 @@ class App extends React.Component {
     return (
       <div>
         Riley
+        {this.state.authenticated ? <Threads threads={this.state.threads}/> : <Login />}
       </div>
     );
   }
