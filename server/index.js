@@ -1,8 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('../db');
 const User = db.User;
+const passport = require('passport');
 const path = require('path');
+const google = require('googleapis');
+const gmail = google.gmail('v1');
+const googleAuth = require('google-auth-library');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 const app = express();
 
