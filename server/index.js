@@ -9,8 +9,16 @@ const google = require('googleapis');
 const gmail = google.gmail('v1');
 const googleAuth = require('google-auth-library');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const base64url = require('base64-url');
 
 const app = express();
+var server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+io.on('connection', (socket) => {
+  console.log('user is connected');
+});
+
 
 app.use(require('morgan')('dev'));
 
