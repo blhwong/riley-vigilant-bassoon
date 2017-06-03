@@ -184,6 +184,10 @@ app.get('/auth', (req, res) => {
   res.send(req.isAuthenticated());
 });
 
+app.get('/googlef35f57ffafa173dc.html', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'googlef35f57ffafa173dc.html'));
+});
+
 app.get('*', (req, res) => {
   res.sendFile( path.resolve(__dirname, '..', 'public', 'dist', 'index.html'));
 });
