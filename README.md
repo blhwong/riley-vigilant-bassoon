@@ -1,6 +1,8 @@
 # Riley
 Gmail API to enable push notifications to front end
 
+Heroku link: https://warm-peak-61497.herokuapp.com
+
 Notes:
 Snippets of e-mail are shown in the front end, and these threads are saved in the db. Used React-Bootstrap to do minimal styling for buttons and table. Used PassportJS to authenticate through Google OAuth2.0. Created webhook to ping /notification endpoint to update the db, and then use socket.io to emit changes and update the client. Used bluebird promises to maintain async chains. If I had more time, I would make code even more modular through refactor, and just make system more robust.
 
