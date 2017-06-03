@@ -80,7 +80,45 @@ passport.use(new GoogleStrategy({
 },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function() {
-      return done(null, profile);
+      let save = {};
+      let email = profile.emails[0].value;
+      // authenticate
+      let auth = new googleAuth();
+      let oauth2Client = new auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, 'http://localhost:3000/auth/google/callback');
+      oauth2Client.credentials = {
+        access_token: accessToken
+      };
+      save.accessToken = accessToken;
+      save.email = email;
+      // find user in db
+      User.findOne({email: email})
+      .then((user) => {
+        if (!user) {
+          // if no user then list threads
+          return listThreads(oauth2Client);
+        } else {
+          // if there is user then return it
+          return Promise.reject({err: null, user: user});
+        }
+      })
+      .then((threads) => {
+        // save threads
+        save.threads = JSON.stringify(threads);
+        // create a webhook
+        return createWebhook(oauth2Client);
+      })
+      .then((watch) => {
+        save.watch = JSON.stringify(watch);
+        let newUser = new User(save);
+        // save new user into db
+        return newUser.save();
+      })
+      .then((user) => {
+        return done(null, user);
+      })
+      .catch(({err, user}) => {
+        return done(err, user);
+      });
     });
   }
 ));
