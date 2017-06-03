@@ -13,7 +13,10 @@ db.once('open', function() {
 });
 
 var userSchema = mongoose.Schema({
-  email: String
+  email: String,
+  accessToken: String,
+  threads: String,
+  watch: String
 });
 
 var User = mongoose.model('User', userSchema);
