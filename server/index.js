@@ -123,6 +123,30 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+app.post('/notification', (req, res) => {
+  let email = JSON.parse(base64url.decode(req.body.message.data)).emailAddress;
+  User.findOne({email: email})
+  .then((user) => {
+    let auth = new googleAuth();
+    let oauth2Client = new auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, 'http://localhost:3000/auth/google/callback');
+    oauth2Client.credentials = {
+      access_token: user.accessToken
+    };
+    listThreads(oauth2Client)
+    .then((threads) => {
+      user.threads = JSON.stringify(threads);
+      return user.save();
+    })
+    .then((user) => {
+      io.emit('new-mail', JSON.parse(user.threads));
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      res.sendStatus(200);
+    });
+  });
+});
+
 app.get('/login',
 passport.authenticate('google', { scope: ['openid', 'email', 'https://mail.google.com/', 'https://www.googleapis.com/auth/gmail.modify', 'https://www.googleapis.com/auth/gmail.readonly']
 }));
