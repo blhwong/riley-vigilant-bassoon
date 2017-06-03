@@ -73,7 +73,8 @@ const listThreads = function(auth) {
       if (err) {
         reject({err: err});
       }
-      var threads = response.threads;
+      console.log(response);
+      var threads = response && response.threads;
       resolve(threads);
     });
   });
