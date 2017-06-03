@@ -134,6 +134,23 @@ passport.authenticate( 'google', {
   res.redirect('/');
 });
 
+app.get('/messages', (req, res) => {
+  User.findOne({email: req.user.email})
+  .then((user) => {
+    res.send(user.threads);
+  })
+  .error((err) => {
+    res.sendStatus(500).send(err);
+  })
+  .catch((err) => {
+    res.sendStatus(404).send(err);
+  });
+});
+
+app.get('/auth', (req, res) => {
+  res.send(req.isAuthenticated());
+});
+
 app.get('*', (req, res) => {
   res.sendFile( path.resolve(__dirname, '..', 'public', 'dist', 'index.html'));
 });
