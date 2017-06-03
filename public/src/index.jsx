@@ -31,7 +31,7 @@ class App extends React.Component {
         this.setState({
           threads: results.data
         });
-        let socket = io.connect('http://localhost:3000');
+        let socket = io.connect('https://warm-peak-61497.herokuapp.com');
         socket.on('new-mail', (data) => {
           this.setState({
             threads: data
