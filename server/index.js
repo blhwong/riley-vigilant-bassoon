@@ -84,7 +84,7 @@ const listThreads = function(auth) {
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: 'http://localhost:3000/auth/google/callback',
+  callbackURL: `${process.env.DOMAIN}auth/google/callback`,
   scope: ['openid', 'email', 'https://mail.google.com/', 'https://www.googleapis.com/auth/gmail.modify', 'https://www.googleapis.com/auth/gmail.readonly']
 },
   function(accessToken, refreshToken, profile, done) {
@@ -93,7 +93,7 @@ passport.use(new GoogleStrategy({
       let email = profile.emails[0].value;
       // authenticate
       let auth = new googleAuth();
-      let oauth2Client = new auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, 'http://localhost:3000/auth/google/callback');
+      let oauth2Client = new auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, `${process.env.DOMAIN}auth/google/callback`);
       oauth2Client.credentials = {
         access_token: accessToken
       };
@@ -137,7 +137,7 @@ app.post('/notification', (req, res) => {
   User.findOne({email: email})
   .then((user) => {
     let auth = new googleAuth();
-    let oauth2Client = new auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, 'http://localhost:3000/auth/google/callback');
+    let oauth2Client = new auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, `${process.env.DOMAIN}auth/google/callback`);
     oauth2Client.credentials = {
       access_token: user.accessToken
     };
