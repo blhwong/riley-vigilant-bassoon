@@ -36,6 +36,42 @@ app.use(passport.session());
 
 app.use(express.static(path.resolve(__dirname, '..', 'public', 'dist')));
 
+
+const createWebhook = function(auth) {
+  return new Promise((resolve, reject) => {
+    gmail.users.watch({
+      auth: auth,
+      userId: 'me',
+      resource: {
+        labelIds: ['INBOX'],
+        topicName: `projects/${process.env.PROJECT_NAME}/topics/mail`
+      }
+    }, {}, (err, watchResponse) => {
+      if (err) {
+        reject({err: err});
+      } else {
+        resolve(watchResponse);
+      }
+    });
+  });
+};
+
+const listThreads = function(auth) {
+  return new Promise((resolve, reject) => {
+    gmail.users.threads.list({
+      auth: auth,
+      userId: 'me',
+    }, function(err, response) {
+      if (err) {
+        reject({err: err});
+      }
+      var threads = response.threads;
+      resolve(threads);
+    });
+  });
+};
+
+
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
