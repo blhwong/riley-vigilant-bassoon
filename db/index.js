@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
-mongoose.connect('mongodb://localhost/riley');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/riley');
 
 var db = mongoose.connection;
 
