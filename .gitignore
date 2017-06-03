@@ -1,3 +1,5 @@
 .env
 Gmail_Integration.pdf
 node_modules/
+public/dist/
+!public/dist/index.html
