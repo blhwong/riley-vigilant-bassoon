@@ -1,9 +1,10 @@
 import React from 'react';
 import Snippet from './Snippet.jsx';
 import { Table } from 'react-bootstrap';
+import './Threads.css';
 
 const Threads = (props) => (
-  <Table striped bordered condensed hover>
+  <Table className="table" striped bordered condensed hover>
     <tbody>
       {props.threads.map((message, index) => {
         return <Snippet

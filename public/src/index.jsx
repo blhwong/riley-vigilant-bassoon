@@ -5,6 +5,7 @@ import Threads from './components/Threads.jsx';
 import Login from './components/Login.jsx';
 import io from 'socket.io-client';
 import 'bootstrap/less/bootstrap.less';
+import './index.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -45,8 +46,8 @@ class App extends React.Component {
 
   render () {
     return (
-      <div>
-        Riley
+      <div className="container">
+        <h1>Riley</h1>
         {this.state.authenticated ? <Threads threads={this.state.threads}/> : <Login />}
       </div>
     );
